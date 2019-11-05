@@ -11,4 +11,3 @@ while number not in seen:
     print(f"#{count}: {number}")
 else:
     print(f"Our initial seed was {seed} and we have repeated ourselves after {count} steps, with {number}")
-
