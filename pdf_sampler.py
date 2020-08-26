@@ -16,12 +16,12 @@ def func(mean, deviation, sample_size, sample_step):
         sample_mean = np.mean(sample)
         sample_deviation = np.std(sample)
         a = plt.plot(bins, 1 / (sample_deviation * np.sqrt(2 * np.pi)) * np.exp( - (bins - sample_mean) ** 2 / (2 * sample_deviation ** 2) ), linewidth=2, color='tab:green')
-        def gaussian(x, mean, deviation): # Gaussian function used to compute probabilities for each bin
+        def gaussian(x, mean, deviation):
             return (1 / (deviation * (2 * np.pi) ** 0.5)) * (np.e ** (-0.5 * ((x - mean) / deviation) ** 2))
-        expected = [scipy.integrate.quad(gaussian, bins[i], bins[i + 1], args = (mean, deviation)) for i in range(len(bins) - 1)] # Integrates Gaussian function over each bin to compute each bin's probability
-        expected = [len(count) * x[0] for x in expected] # Computes expected number of observations in each bin
-        chisq, pval = st.chisquare(count, expected, 1) # Computes chi-square statistic and p-value
-        chisq = chisq / ((len(bins) - 1) - 2) # Computes reduced chi-square statistic (chi-square per degree of freedom)
+        expected = [scipy.integrate.quad(gaussian, bins[i], bins[i + 1], args = (mean, deviation)) for i in range(len(bins) - 1)]
+        expected = [len(count) * x[0] for x in expected] 
+        chisq, pval = st.chisquare(count, expected, 1) 
+        chisq = chisq / ((len(bins) - 1) - 2) 
         plt.ylabel('Probability Density')
         plt.legend(a, [f'$n_s = {len(sample)}$, $\mu_s = {round(sample_mean, 3)}$, $\sigma_s = {round(sample_deviation, 3)}$, $\chi^2_\\nu = {round(chisq, 3)}$, $p = {round(pval, 3)}$'], loc = 'upper right')
         camera.snap()
