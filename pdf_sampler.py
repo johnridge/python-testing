@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 from celluloid import Camera
 import argparse
 
-def func(mean, deviation, sample_size, sample_step):
+def main(mean, deviation, samples, sample_size):
     fig = plt.figure()
     camera = Camera(fig)
     sample = []
-    plt.title(f'Probability Density \n $n = {sample_size}$, $\mu = {mean}$, $\sigma = {deviation}$')
-    while len(sample) < sample_size:
-        sample.extend(np.random.normal(loc = mean, scale = deviation, size = sample_step))
+    plt.title(f'Probability Density \n $n = {samples}$, $n_i = {sample_size}$, $\mu = {mean}$, $\sigma = {deviation}$')
+    for n in range(samples):
+        sample.extend(np.random.normal(loc = mean, scale = deviation, size = sample_size))
         count, bins, ignored = plt.hist(sample, bins = 'auto', density = True, edgecolor = 'k', color = 'tab:blue')
         sample_mean = np.mean(sample)
         sample_deviation = np.std(sample)
@@ -32,11 +32,11 @@ def func(mean, deviation, sample_size, sample_step):
 parser = argparse.ArgumentParser()
 parser.add_argument('mean', type = float)
 parser.add_argument('deviation', type = float)
+parser.add_argument('samples', type = int)
 parser.add_argument('sample_size', type = int)
-parser.add_argument('sample_step', type = int)
 args = parser.parse_args()
 mean = args.mean
 deviation = args.deviation
+samples = args.samples
 sample_size = args.sample_size
-sample_step = args.sample_step
-func(mean, deviation, sample_size, sample_step)
+main(mean, deviation, samples, sample_size)
